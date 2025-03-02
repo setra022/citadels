@@ -1,22 +1,18 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.graphics import Color, Ellipse
 
 
 class PongBall(Widget):
-    velocity_x = NumericProperty(0)
-    velocity_y = NumericProperty(0)
-    velocity = Vector(4, 0)
+    velocity = Vector(4, 1)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size = (50, 50)  # Set a visible size
         with self.canvas:
             self.color = Color(1, 0, 0, 1)  # Red color
-            self.ball = Ellipse(pos=self.pos, size=self.size)
+            self.ball = Ellipse(pos=self.pos, size=(50, 50))
 
     def move(self):
         self.pos = Vector(*self.velocity) + self.pos
@@ -24,19 +20,19 @@ class PongBall(Widget):
 
 
 class PongGame(Widget):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ball = PongBall()
+        self.add_widget(self.ball)
+
     def update(self, dt):
         print(f"Ball position: {self.ball.pos}, size: {self.ball.size}")
         self.ball.move()
-
-    def on_touch_down(self, touch):
-        self.ball.velocity = Vector(4, 0).rotate(45)  # Start the ball movement
 
 
 class PongApp(App):
     def build(self):
         game = PongGame()
-        game.ball = PongBall()
-        game.add_widget(game.ball)
         Clock.schedule_interval(game.update, 1.0 / 60.0)  # Run the game loop
         return game
 
