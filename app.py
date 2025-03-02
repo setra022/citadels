@@ -16,7 +16,6 @@ class PongBall(Widget):
             self.ball = Ellipse(pos=self.pos, size=self.size)
 
     def move(self):
-        # Move the widget
         self.pos = Vector(*self.velocity) + self.pos
         self.ball.pos = self.pos  # Update the ellipse position
 
@@ -28,9 +27,13 @@ class PongBall(Widget):
 class PongGame(Widget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.ball = PongBall(pos=self.center)  # Start ball in the center
+        self.ball = PongBall()
         self.add_widget(self.ball)
         Clock.schedule_interval(self.update, 1.0 / 60.0)  # 60 FPS
+
+    def on_size(self, *args):
+        # Place the ball in the center when window is resized
+        self.ball.pos = (self.width / 2 - self.ball.width / 2, self.height / 2 - self.ball.height / 2)
 
     def update(self, dt):
         self.ball.move()
