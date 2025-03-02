@@ -10,18 +10,23 @@ class PongBall(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size = (50, 50)  # Ensure the ball has a size
+        self.size = (50, 50)  # Ensure ball has a size
         with self.canvas:
             self.color = Color(1, 0, 0, 1)  # Red color
             self.ball = Ellipse(pos=self.pos, size=self.size)
 
     def move(self):
+        # Move the widget
         self.pos = Vector(*self.velocity) + self.pos
-        self.ball.pos = self.pos  # Update the ellipse position
+        self.ball.pos = self.pos  # Update ellipse position
 
-        # Check for collision with top and bottom walls
+        # Bounce off top and bottom walls
         if self.top >= self.parent.height or self.y <= 0:
-            self.velocity.y *= -1  # Reverse direction on Y-axis
+            self.velocity.y *= -1  # Reverse Y direction
+
+        # Bounce off left and right walls
+        if self.right >= self.parent.width or self.x <= 0:
+            self.velocity.x *= -1  # Reverse X direction
 
 
 class PongGame(Widget):
