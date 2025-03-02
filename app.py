@@ -15,7 +15,8 @@ class PongBall(Widget):
             self.ball = Ellipse(pos=self.pos, size=(50, 50))
 
     def move(self):
-        self.ball.pos = Vector(*self.velocity) + self.ball.pos
+        self.pos = Vector(*self.velocity) + self.pos  # Move the widget
+        self.ball.pos = self.pos  # Update the ellipse position
 
 
 class PongGame(Widget):
