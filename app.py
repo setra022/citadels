@@ -10,9 +10,9 @@ class PongBall(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size = (50, 50)  # Ensure ball has a size
+        self.size = (50, 50)  # Set ball size
         with self.canvas:
-            self.color = Color(1, 0, 0, 1)  # Red color
+            self.color = Color(1, 0, 0, 1)  # Red ball
             self.ball = Ellipse(pos=self.pos, size=self.size)
 
     def move(self):
@@ -35,6 +35,12 @@ class PongPaddle(Widget):
     def bounce_ball(self, ball):
         if self.collide_widget(ball):  # Check for collision
             ball.velocity.x *= -1  # Reverse ball direction
+            
+            # 🔹 Push the ball slightly away to prevent multiple collisions
+            if ball.velocity.x > 0:
+                ball.x = self.right + 1  # Move ball right (if hitting left paddle)
+            else:
+                ball.x = self.x - ball.width - 1  # Move ball left (if hitting right paddle)
 
     def on_pos(self, *args):
         self.rect.pos = self.pos  # Update paddle position
